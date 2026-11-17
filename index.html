@@ -1,0 +1,1452 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Bereko Hub | Co-working Space in Port Harcourt</title>
+    <link rel="shortcut icon" href="berekologo.jpg" type="image/x-icon">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Figtree:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              head: ["Sora", "system-ui", "sans-serif"],
+              body: ["Figtree", "system-ui", "sans-serif"],
+            },
+            colors: {
+              navy: "#0040A0",
+              sky: "#0088CC",
+              ink: "#0A1A33",
+              mist: "#F2F7FC",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        box-sizing: border-box;
+        color-scheme: light;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      body {
+        margin: 0;
+        font-family: Figtree, system-ui, sans-serif;
+        background: #fff;
+        color: #0a1a33;
+      }
+      .grad {
+        background: linear-gradient(135deg, #0040a0, #0088cc);
+      }
+      .gtext {
+        background: linear-gradient(135deg, #0040a0, #0088cc);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .ph {
+        background: repeating-linear-gradient(
+          45deg,
+          #e6f0fa,
+          #e6f0fa 10px,
+          #f2f7fc 10px,
+          #f2f7fc 20px
+        );
+        border: 2px dashed #9cc4e8;
+        color: #3c6fa8;
+      }
+      .dark .ph {
+        background: #0f1b30;
+        border-color: #27406a;
+        color: #6c8fc0;
+      }
+      @keyframes drop {
+        from {
+          opacity: 0;
+          transform: translateY(-40px) scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes bob {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-14px);
+        }
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes marq {
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      @keyframes pulse2 {
+        0% {
+          box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
+        }
+        100% {
+          box-shadow: 0 0 0 10px rgba(52, 211, 153, 0);
+        }
+      }
+      @keyframes pop {
+        from {
+          opacity: 0;
+          transform: scale(0.95) translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .a-drop {
+        animation: drop 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+      }
+      .a-rise {
+        animation: rise 0.8s ease both;
+      }
+      .bob {
+        animation: bob 6s ease-in-out infinite;
+      }
+      .live {
+        animation: pulse2 1.6s infinite;
+      }
+      .pop {
+        animation: pop 0.25s ease both;
+      }
+      .rv {
+        opacity: 0;
+        transform: translateY(28px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+      .rv.in {
+        opacity: 1;
+        transform: none;
+      }
+      .marq {
+        display: flex;
+        width: max-content;
+        animation: marq 28s linear infinite;
+      }
+      :focus-visible {
+        outline: 3px solid #0088cc;
+        outline-offset: 2px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+        .rv {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+    <script>
+      const { useState, useEffect, useRef, useMemo } = React;
+      const html = htm.bind(React.createElement);
+
+      /* ---------- shared ---------- */
+      const Logo = ({ size = 40, white = false }) =>
+        html` <svg
+          width=${size}
+          height=${size}
+          viewBox="200 200 680 680"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient
+              id=${"g" + (white ? "w" : "c")}
+              x1="0"
+              y1="1"
+              x2="1"
+              y2="0"
+            >
+              <stop offset="0" stop-color=${white ? "#fff" : "#0040A0"} />
+              <stop offset="1" stop-color=${white ? "#CFE9FA" : "#0088CC"} />
+            </linearGradient>
+          </defs>
+          <g fill=${"url(#g" + (white ? "w" : "c") + ")"} fill-rule="evenodd">
+            <rect x="225" y="226" width="300" height="627" rx="150" />
+            <path
+              d="M679 226a176 176 0 1 1 0 352a176 176 0 1 1 0-352zm0 74a102 102 0 1 0 0 204a102 102 0 1 0 0-204z"
+            />
+            <path
+              d="M679 502a176 176 0 1 1 0 352a176 176 0 1 1 0-352zm0 74a102 102 0 1 0 0 204a102 102 0 1 0 0-204z"
+            />
+          </g>
+        </svg>`;
+
+      let isAdmin = false,
+        memberName = "Member";
+      const go = (p) => {
+        location.hash = p;
+      };
+      const useRoute = () => {
+        const g = () => (location.hash || "#home").slice(1);
+        const [r, s] = useState(g());
+        useEffect(() => {
+          const f = () => {
+            s(g());
+            window.scrollTo(0, 0);
+          };
+          addEventListener("hashchange", f);
+          return () => removeEventListener("hashchange", f);
+        }, []);
+        return r;
+      };
+      const Reveal = ({ children, className = "", delay = 0 }) => {
+        const r = useRef();
+        useEffect(() => {
+          const o = new IntersectionObserver(
+            (e) =>
+              e.forEach((x) => {
+                if (x.isIntersecting) {
+                  x.target.classList.add("in");
+                  o.disconnect();
+                }
+              }),
+            { threshold: 0.15 },
+          );
+          o.observe(r.current);
+          return () => o.disconnect();
+        }, []);
+        return html`<div
+          ref=${r}
+          style=${{ transitionDelay: delay + "ms" }}
+          className=${"rv " + className}
+        >
+          ${children}
+        </div>`;
+      };
+      const Slot = ({ label, className = "" }) =>
+        html`<div
+          className=${"ph flex items-center justify-center text-center text-sm font-medium p-3 " +
+          className}
+        >
+          <span
+            >${label}<br /><span className="opacity-70 text-xs"
+              >Drop image here</span
+            ></span
+          >
+        </div>`;
+
+      /* ---------- landing ---------- */
+      const services = [
+        [
+          "Private offices",
+          "Lockable offices for teams of 2 to 12, with fast internet and power that stays on.",
+        ],
+        [
+          "Content studio",
+          "Shoot video, record podcasts and take product photos in a treated, well-lit room.",
+        ],
+        [
+          "Printing press",
+          "Flyers, banners, books and business cards printed on site, same day.",
+        ],
+        [
+          "Event space",
+          "Press conferences, workshops, book clubs and movie nights, set up for you.",
+        ],
+      ];
+      const uses = [
+        "Press conference",
+        "Book club",
+        "Workshop",
+        "Movie night",
+        "Team meeting",
+        "Podcast recording",
+        "Product launch",
+        "Training day",
+      ];
+
+      function Landing() {
+        const [open, setOpen] = useState(false);
+        return html`<div className="overflow-x-hidden">
+          <header
+            className="fixed top-0 inset-x-0 z-40 bg-white/80 backdrop-blur border-b border-sky/10"
+            style=${{ paddingTop: "env(safe-area-inset-top,0px)" }}
+          >
+            <div
+              className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between"
+            >
+              <a
+                href="#home"
+                className="flex items-center gap-2 font-head font-bold text-lg"
+                ><${Logo} size=${34} />Bereko Hub</a
+              >
+              <nav className="hidden md:flex gap-8 text-sm font-medium">
+                <a
+                  href="#home"
+                  onClick=${() =>
+                    document.getElementById("spaces")?.scrollIntoView()}
+                  className="hover:text-sky"
+                  >Spaces</a
+                >
+                <a
+                  href="#home"
+                  onClick=${() =>
+                    document.getElementById("gallery")?.scrollIntoView()}
+                  className="hover:text-sky"
+                  >Gallery</a
+                >
+                <a
+                  href="#home"
+                  onClick=${() =>
+                    document.getElementById("visit")?.scrollIntoView()}
+                  className="hover:text-sky"
+                  >Visit</a
+                >
+              </nav>
+              <div className="flex items-center gap-2">
+                <a
+                  href="#login"
+                  className="hidden sm:block px-4 py-2 text-sm font-semibold hover:text-sky"
+                  >Log in</a
+                >
+                <a
+                  href="#register"
+                  className="grad text-white px-4 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition"
+                  >Register</a
+                >
+              </div>
+            </div>
+          </header>
+
+          <section className="relative pt-28 pb-20 bg-mist">
+            <div
+              className="absolute -top-24 -right-24 w-[34rem] h-[34rem] rounded-full border-[70px] border-sky/10"
+            ></div>
+            <div
+              className="absolute top-72 -left-32 w-80 h-80 rounded-full border-[50px] border-navy/5"
+            ></div>
+            <div
+              className="relative max-w-6xl mx-auto px-5 grid lg:grid-cols-2 gap-12 items-center"
+            >
+              <div>
+                <p
+                  className="a-rise inline-flex items-center gap-2 bg-white rounded-full px-4 py-1.5 text-sm font-semibold text-navy shadow-sm"
+                  style=${{ animationDelay: ".1s" }}
+                >
+                  Mile 3, Port Harcourt
+                </p>
+                <h1
+                  className="a-rise font-head font-extrabold text-5xl md:text-6xl leading-[1.05] mt-6"
+                  style=${{ animationDelay: ".25s" }}
+                >
+                  Work, create and meet in one place.
+                </h1>
+                <p
+                  className="a-rise mt-6 text-lg text-ink/70 max-w-lg"
+                  style=${{ animationDelay: ".4s" }}
+                >
+                  Bereko Hub gives you offices, a content studio and a printing
+                  press under one roof, so you spend less time setting up and
+                  more time getting things done.
+                </p>
+                <div
+                  className="a-rise mt-8 flex flex-wrap gap-3"
+                  style=${{ animationDelay: ".55s" }}
+                >
+                  <a
+                    href="#register"
+                    className="grad text-white px-7 py-3.5 rounded-full font-semibold shadow-lg shadow-sky/30 hover:-translate-y-0.5 transition"
+                    >Create an account</a
+                  >
+                  <a
+                    href="#login"
+                    className="px-7 py-3.5 rounded-full font-semibold border-2 border-navy/20 hover:border-navy transition"
+                    >Log in</a
+                  >
+                </div>
+                <p
+                  className="a-rise mt-6 text-sm text-ink/60"
+                  style=${{ animationDelay: ".7s" }}
+                >
+                  Open Monday to Saturday, 9:30am to 5:30pm
+                </p>
+              </div>
+              <div className="relative h-[460px] md:h-[520px]">
+                <div
+                  className="a-drop absolute left-0 top-0 w-[44%] h-full rounded-full overflow-hidden shadow-xl"
+                  style=${{ animationDelay: ".3s" }}
+                >
+                  <${Slot}
+                    label="Hero photo: hub lounge"
+                    className="w-full h-full"
+                  />
+                </div>
+                <div
+                  className="a-drop bob absolute right-0 top-0 w-[50%] aspect-square rounded-full overflow-hidden shadow-xl"
+                  style=${{ animationDelay: ".5s" }}
+                >
+                  <${Slot}
+                    label="Photo: team at work"
+                    className="w-full h-full"
+                  />
+                </div>
+                <div
+                  className="a-drop absolute right-0 bottom-0 w-[50%] aspect-square rounded-full overflow-hidden shadow-xl"
+                  style=${{ animationDelay: ".7s" }}
+                >
+                  <${Slot}
+                    label="Photo: content studio"
+                    className="w-full h-full"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div className="bg-navy text-white py-4 overflow-hidden">
+            <div className="marq font-head font-semibold">
+              ${[...uses, ...uses].map(
+                (u, i) =>
+                  html`<span
+                    key=${i}
+                    className="mx-8 whitespace-nowrap text-lg flex items-center gap-8"
+                    >${u}<${Logo} size=${18} white=${true}
+                  /></span>`,
+              )}
+            </div>
+          </div>
+
+          <section id="spaces" className="max-w-6xl mx-auto px-5 py-24">
+            <${Reveal}
+              ><h2 className="font-head font-bold text-4xl max-w-xl">
+                Everything you need to create and collaborate
+              </h2><//
+            >
+            <div className="mt-12 grid sm:grid-cols-2 gap-6">
+              ${services.map(
+                (s, i) =>
+                  html`<${Reveal} key=${s[0]} delay=${i * 90}>
+                    <div
+                      className="group rounded-3xl border border-sky/15 overflow-hidden hover:shadow-xl hover:shadow-sky/10 transition"
+                    >
+                      <${Slot}
+                        label=${"Photo: " + s[0].toLowerCase()}
+                        className="h-52 rounded-none border-0 border-b-2"
+                      />
+                      <div className="p-6">
+                        <h3 className="font-head font-semibold text-xl">
+                          ${s[0]}
+                        </h3>
+                        <p className="mt-2 text-ink/70">${s[1]}</p>
+                      </div>
+                    </div><//
+                  >`,
+              )}
+            </div>
+          </section>
+
+          <section id="gallery" className="bg-mist py-24">
+            <div className="max-w-6xl mx-auto px-5">
+              <${Reveal}
+                ><h2 className="font-head font-bold text-4xl">
+                  Take a look inside
+                </h2>
+                <p className="mt-3 text-ink/70 max-w-lg">
+                  Replace these frames with your own photos of the hub.
+                </p><//
+              >
+              <${Reveal} delay=${100}
+                ><div
+                  className="mt-10 grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-4 h-[460px]"
+                >
+                  <${Slot}
+                    label="Wide: main workspace"
+                    className="col-span-2 row-span-2 rounded-3xl"
+                  />
+                  <${Slot} label="Meeting room" className="rounded-3xl" />
+                  <${Slot} label="Reception" className="rounded-3xl" />
+                  <${Slot} label="Event setup" className="rounded-3xl" />
+                  <${Slot}
+                    label="Printing press"
+                    className="rounded-3xl"
+                  /></div
+              ><//>
+            </div>
+          </section>
+
+          <section
+            className="max-w-6xl mx-auto px-5 py-24 grid md:grid-cols-3 gap-8 text-center"
+          >
+            ${[
+              ["Mon to Sat", "9:30am to 5:30pm"],
+              ["Hourly to monthly", "Flexible plans for every kind of work"],
+              ["Join online", "Create an account in under a minute"],
+            ].map(
+              (x, i) =>
+                html`<${Reveal} key=${i} delay=${i * 100}
+                  ><div
+                    className="p-8 rounded-3xl bg-white border border-sky/15"
+                  >
+                    <p className="font-head font-bold text-2xl gtext">
+                      ${x[0]}
+                    </p>
+                    <p className="mt-2 text-ink/70">${x[1]}</p>
+                  </div><//
+                >`,
+            )}
+          </section>
+
+          <section id="visit" className="px-5 pb-24">
+            <div
+              className="max-w-6xl mx-auto grad rounded-[2.5rem] text-white p-10 md:p-16 grid md:grid-cols-2 gap-10 items-center relative overflow-hidden"
+            >
+              <div
+                className="absolute -right-16 -bottom-16 w-72 h-72 rounded-full border-[40px] border-white/10"
+              ></div>
+              <div className="relative">
+                <h2 className="font-head font-bold text-4xl">
+                  Ready to join the hub?
+                </h2>
+                <p className="mt-4 text-white/85">
+                  2 UST Main Gate Road, Mile 3, Port Harcourt
+                </p>
+                <a
+                  href="#register"
+                  className="inline-block mt-8 bg-white text-navy font-semibold px-7 py-3.5 rounded-full hover:-translate-y-0.5 transition"
+                  >Create an account</a
+                >
+              </div>
+              <${Slot}
+                label="Map or storefront photo"
+                className="relative h-52 rounded-3xl !border-white/40 !text-white/80 !bg-white/10"
+              />
+            </div>
+          </section>
+
+          <footer
+            className="border-t border-sky/15 py-8 text-center text-sm text-ink/60"
+          >
+            Bereko Hub, Port Harcourt. Offices, content studio and printing
+            press. Pitch prototype.
+          </footer>
+        </div>`;
+      }
+
+      /* ---------- auth ---------- */
+      const Field = ({ label, type = "text", value, onChange, placeholder }) =>
+        html`<label className="block"
+          ><span className="text-sm font-semibold">${label}</span
+          ><input
+            type=${type}
+            value=${value}
+            onInput=${(e) => onChange(e.target.value)}
+            placeholder=${placeholder}
+            className="mt-1.5 w-full rounded-xl border border-ink/15 px-4 py-3 outline-none focus:border-sky focus:ring-4 focus:ring-sky/15 transition bg-white"
+        /></label>`;
+
+      function Auth({ mode }) {
+        const reg = mode === "register";
+        const [f, setF] = useState({ name: "", email: "", phone: "", pw: "" });
+        const [err, setErr] = useState("");
+        const up = (k) => (v) => setF({ ...f, [k]: v });
+        const submit = () => {
+          if (!f.email.includes("@") || f.pw.length < 4 || (reg && !f.name)) {
+            setErr(
+              reg
+                ? "Enter your name, a valid email and a password of 4 or more characters."
+                : "Enter a valid email and your password.",
+            );
+            return;
+          }
+          if (!reg && f.email.trim().toLowerCase() === "admin@berekohub.com") {
+            isAdmin = true;
+            go("dashboard");
+          } else {
+            memberName = reg ? f.name : f.email.split("@")[0];
+            go("member");
+          }
+        };
+        return html`<div className="min-h-screen grid lg:grid-cols-2">
+          <div
+            className="hidden lg:flex grad text-white p-12 flex-col justify-between relative overflow-hidden"
+          >
+            <div
+              className="absolute -right-24 top-1/3 w-96 h-96 rounded-full border-[60px] border-white/10 bob"
+            ></div>
+            <a
+              href="#home"
+              className="flex items-center gap-2 font-head font-bold text-xl relative"
+              ><${Logo} size=${40} white=${true} />Bereko Hub</a
+            >
+            <div className="relative">
+              <h2 className="font-head font-bold text-4xl max-w-sm">
+                ${reg
+                  ? "Join a hub built for people who create."
+                  : "Welcome back to Bereko Hub."}
+              </h2>
+              <${Slot}
+                label="Photo: hub interior"
+                className="mt-8 h-44 rounded-3xl !border-white/40 !text-white/80 !bg-white/10"
+              />
+            </div>
+            <p className="text-white/80 text-sm relative">
+              Mon to Sat, 9:30am to 5:30pm
+            </p>
+          </div>
+          <div className="flex items-center justify-center p-6">
+            <div className="w-full max-w-md a-rise">
+              <a
+                href="#home"
+                className="lg:hidden flex items-center gap-2 font-head font-bold text-lg mb-8"
+                ><${Logo} size=${34} />Bereko Hub</a
+              >
+              <h1 className="font-head font-bold text-3xl">
+                ${reg ? "Create your account" : "Log in"}
+              </h1>
+              <p className="mt-2 text-ink/60">
+                ${reg
+                  ? "Join Bereko Hub and our team will set up your visits."
+                  : "Log in to see your bookings."}
+              </p>
+              <div className="mt-8 space-y-4">
+                ${reg &&
+                html`<${Field}
+                  label="Full name"
+                  value=${f.name}
+                  onChange=${up("name")}
+                  placeholder="Ada Okafor"
+                />`}
+                <${Field}
+                  label="Email"
+                  type="email"
+                  value=${f.email}
+                  onChange=${up("email")}
+                  placeholder="you@company.com"
+                />
+                ${reg &&
+                html`<${Field}
+                  label="Phone"
+                  value=${f.phone}
+                  onChange=${up("phone")}
+                  placeholder="0803 000 0000"
+                />`}
+                <${Field}
+                  label="Password"
+                  type="password"
+                  value=${f.pw}
+                  onChange=${up("pw")}
+                  placeholder="At least 4 characters"
+                />
+              </div>
+              ${err &&
+              html`<p role="alert" className="mt-4 text-sm text-red-600">
+                ${err}
+              </p>`}
+              <button
+                onClick=${submit}
+                className="mt-6 w-full grad text-white font-semibold py-3.5 rounded-xl hover:opacity-90 transition"
+              >
+                ${reg ? "Create account" : "Log in"}
+              </button>
+              <p className="mt-6 text-sm text-ink/60 text-center">
+                ${reg ? "Already have an account?" : "New to Bereko Hub?"}
+                <a
+                  href=${reg ? "#login" : "#register"}
+                  className="text-sky font-semibold"
+                  >${reg ? "Log in" : "Create an account"}</a
+                >
+              </p>
+              <p className="mt-3 text-xs text-ink/40 text-center">
+                Prototype: any valid details work. Admin demo login:
+                admin@berekohub.com with any password.
+              </p>
+            </div>
+          </div>
+        </div>`;
+      }
+
+      /* ---------- dashboard ---------- */
+      const SPACES = [
+        ["Private office", 8],
+        ["Hot desk", 20],
+        ["Content studio", 2],
+        ["Printing press", 3],
+        ["Event hall", 1],
+        ["Meeting room", 4],
+      ];
+      const MEMBERS0 = [
+        [
+          "Chinedu Eze",
+          "chinedu@tidalmedia.ng",
+          "Tidal Media",
+          "Content studio",
+          95,
+        ],
+        ["Amaka Obi", "amaka@obiandco.com", "Obi & Co", "Private office", 212],
+        ["Tamuno Briggs", "tamuno@brigg.dev", "Freelance dev", "Hot desk", 48],
+        ["Ibinabo Wokoma", "ibi@pageturners.ng", "Page Turners Club", null, 0],
+        [
+          "Emeka Nwosu",
+          "emeka@nwosuprints.com",
+          "Nwosu Prints",
+          "Printing press",
+          130,
+        ],
+        ["Sandra Peterside", "sandra@pstudio.ng", "P Studio", null, 0],
+        [
+          "Kelechi Amadi",
+          "kelechi@amadi.ng",
+          "Amadi Consult",
+          "Meeting room",
+          20,
+        ],
+        [
+          "Tonye Cookey",
+          "tonye@cookeylaw.com",
+          "Cookey Law",
+          "Private office",
+          77,
+        ],
+        ["Blessing Dike", "blessing@dikeevents.ng", "Dike Events", null, 0],
+        [
+          "Joseph Alabo",
+          "joseph@alabo.io",
+          "Freelance designer",
+          "Hot desk",
+          33,
+        ],
+      ].map((m, i) => ({
+        id: i + 1,
+        name: m[0],
+        email: m[1],
+        org: m[2],
+        space: m[3],
+        since: m[4],
+        visits: [14, 32, 9, 5, 21, 3, 11, 40, 2, 17][i],
+      }));
+      const BOOK0 = [
+        {
+          id: 1,
+          member: "Chinedu Eze",
+          space: "Content studio",
+          date: "2026-11-17",
+          start: "09:30",
+          end: "13:00",
+          status: "In progress",
+        },
+        {
+          id: 2,
+          member: "Ibinabo Wokoma",
+          space: "Event hall",
+          date: "2026-11-18",
+          start: "14:00",
+          end: "17:00",
+          status: "Confirmed",
+        },
+        {
+          id: 3,
+          member: "Sandra Peterside",
+          space: "Content studio",
+          date: "2026-11-19",
+          start: "10:00",
+          end: "12:00",
+          status: "Pending",
+        },
+        {
+          id: 4,
+          member: "Emeka Nwosu",
+          space: "Printing press",
+          date: "2026-11-17",
+          start: "11:00",
+          end: "15:00",
+          status: "In progress",
+        },
+        {
+          id: 5,
+          member: "Blessing Dike",
+          space: "Event hall",
+          date: "2026-11-21",
+          start: "10:00",
+          end: "16:00",
+          status: "Confirmed",
+        },
+        {
+          id: 6,
+          member: "Kelechi Amadi",
+          space: "Meeting room",
+          date: "2026-11-16",
+          start: "09:30",
+          end: "10:30",
+          status: "Completed",
+        },
+      ];
+      const sTone = {
+        "In progress": "bg-emerald-500/15 text-emerald-300",
+        Confirmed: "bg-sky/20 text-sky-300",
+        Pending: "bg-amber-500/15 text-amber-300",
+        Completed: "bg-slate-500/20 text-slate-300",
+        Cancelled: "bg-red-500/15 text-red-300",
+      };
+      const Pill = ({ s }) =>
+        html`<span
+          className=${"px-2.5 py-1 rounded-full text-xs font-semibold " +
+          sTone[s]}
+          >${s}</span
+        >`;
+      const Av = ({ n, size = "w-9 h-9" }) =>
+        html`<span
+          className=${size +
+          " grad rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"}
+          >${n
+            .split(" ")
+            .map((x) => x[0])
+            .slice(0, 2)
+            .join("")}</span
+        >`;
+      const dur = (m) =>
+        m >= 60 ? Math.floor(m / 60) + "h " + (m % 60) + "m" : m + "m";
+      const icons = {
+        Overview: "M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10",
+        Bookings:
+          "M7 3v3m10-3v3M4 8h16M5 5h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1z",
+        Members: "M16 11a4 4 0 10-8 0 4 4 0 008 0zM4 21a8 8 0 0116 0",
+        "Live now":
+          "M12 12m-2 0a2 2 0 104 0 2 2 0 10-4 0M7.8 7.8a6 6 0 000 8.4M16.2 7.8a6 6 0 010 8.4",
+        Spaces: "M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",
+      };
+      const Ic = ({ n }) =>
+        html`<svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d=${icons[n]} />
+        </svg>`;
+
+      function Dashboard() {
+        const [tab, setTab] = useState("Overview");
+        const [members, setMembers] = useState(MEMBERS0);
+        const [books, setBooks] = useState(BOOK0);
+        const [modal, setModal] = useState(false);
+        const [q, setQ] = useState("");
+        const [toast, setToast] = useState("");
+        const [nav, setNav] = useState(false);
+        const [tick, setTick] = useState(0);
+        useEffect(() => {
+          const t = setInterval(() => setTick((x) => x + 1), 30000);
+          return () => clearInterval(t);
+        }, []);
+        const say = (m) => {
+          setToast(m);
+          setTimeout(() => setToast(""), 2600);
+        };
+        const live = members.filter((m) => m.space);
+        const checkOut = (id) => {
+          const m = members.find((x) => x.id === id);
+          setMembers(
+            members.map((x) =>
+              x.id === id ? { ...x, space: null, since: 0 } : x,
+            ),
+          );
+          say(m.name + " checked out");
+        };
+        const checkIn = (id, space) => {
+          setMembers(
+            members.map((x) =>
+              x.id === id ? { ...x, space, since: 0, visits: x.visits + 1 } : x,
+            ),
+          );
+          say("Checked in to " + space);
+        };
+        const addBooking = (b) => {
+          setBooks([{ ...b, id: Date.now(), status: "Confirmed" }, ...books]);
+          setModal(false);
+          say("Booked " + b.space + " for " + b.member);
+        };
+        const setStatus = (id, s) => {
+          setBooks(books.map((b) => (b.id === id ? { ...b, status: s } : b)));
+          say("Booking " + s.toLowerCase());
+        };
+        const cap = Object.fromEntries(SPACES);
+        const occ = SPACES.map(([n, c]) => ({
+          n,
+          c,
+          used: live.filter((m) => m.space === n).length,
+        }));
+        const stats = [
+          ["Checked in now", live.length, "text-emerald-300"],
+          [
+            "Bookings today",
+            books.filter((b) => b.date === "2026-11-17").length,
+            "text-sky-300",
+          ],
+          [
+            "Pending approval",
+            books.filter((b) => b.status === "Pending").length,
+            "text-amber-300",
+          ],
+          ["Total members", members.length, "text-white"],
+        ];
+        const week = [
+          ["Mon", 18],
+          ["Tue", 24],
+          ["Wed", 21],
+          ["Thu", 29],
+          ["Fri", 26],
+          ["Sat", 12],
+        ];
+        const BookBtn = html`<button
+          onClick=${() => setModal(true)}
+          className="grad text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:opacity-90 transition"
+        >
+          New booking
+        </button>`;
+
+        const Bookings = html`<div
+          className="rounded-2xl bg-[#0F1B30] border border-white/5 overflow-x-auto"
+        >
+          <table className="w-full text-sm min-w-[640px]">
+            <thead className="text-left text-slate-400">
+              <tr>
+                <th className="p-4 font-medium">Member</th>
+                <th className="font-medium">Space</th>
+                <th className="font-medium">Date and time</th>
+                <th className="font-medium">Status</th>
+                <th className="font-medium pr-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${books.map(
+                (b) =>
+                  html`<tr
+                    key=${b.id}
+                    className="border-t border-white/5 hover:bg-white/[.02]"
+                  >
+                    <td className="p-4">
+                      <div className="flex items-center gap-3">
+                        <${Av} n=${b.member} />${b.member}
+                      </div>
+                    </td>
+                    <td>${b.space}</td>
+                    <td className="text-slate-300">
+                      ${b.date}, ${b.start} to ${b.end}
+                    </td>
+                    <td><${Pill} s=${b.status} /></td>
+                    <td className="pr-4 text-right space-x-3">
+                      ${b.status === "Pending" &&
+                      html`<button
+                        onClick=${() => setStatus(b.id, "Confirmed")}
+                        className="text-sky-300 font-semibold"
+                      >
+                        Approve
+                      </button>`}
+                      ${(b.status === "Pending" || b.status === "Confirmed") &&
+                      html`<button
+                        onClick=${() => setStatus(b.id, "Cancelled")}
+                        className="text-red-300 font-semibold"
+                      >
+                        Cancel
+                      </button>`}
+                    </td>
+                  </tr>`,
+              )}
+            </tbody>
+          </table>
+        </div>`;
+
+        const LiveList = (max) =>
+          html`<div className="space-y-2">
+            ${live.slice(0, max).map(
+              (m) =>
+                html`<div
+                  key=${m.id}
+                  className="flex items-center gap-3 p-3 rounded-xl bg-white/[.03]"
+                >
+                  <${Av} n=${m.name} />
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold truncate">${m.name}</p>
+                    <p className="text-xs text-slate-400 truncate">
+                      ${m.space}, in for ${dur(m.since + tick * 0 + 0)}
+                    </p>
+                  </div>
+                  <span
+                    className="w-2.5 h-2.5 rounded-full bg-emerald-400 live"
+                  ></span>
+                </div>`,
+            )}${live.length === 0 &&
+            html`<p className="text-slate-400 text-sm">
+              Nobody is checked in. Check a member in from the Members tab.
+            </p>`}
+          </div>`;
+
+        const views = {
+          Overview: html`<div className="space-y-6">
+            <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+              ${stats.map(
+                (s) =>
+                  html`<div
+                    key=${s[0]}
+                    className="rounded-2xl bg-[#0F1B30] border border-white/5 p-5"
+                  >
+                    <p className="text-sm text-slate-400">${s[0]}</p>
+                    <p className=${"font-head font-bold text-4xl mt-2 " + s[2]}>
+                      ${s[1]}
+                    </p>
+                  </div>`,
+              )}
+            </div>
+            <div className="grid xl:grid-cols-3 gap-6">
+              <div
+                className="xl:col-span-2 rounded-2xl bg-[#0F1B30] border border-white/5 p-6"
+              >
+                <h3 className="font-head font-semibold">Visits this week</h3>
+                <div className="mt-6 flex items-end gap-4 h-48">
+                  ${week.map(
+                    ([d, v]) =>
+                      html`<div
+                        key=${d}
+                        className="flex-1 flex flex-col items-center gap-2 h-full justify-end"
+                      >
+                        <span className="text-xs text-slate-400">${v}</span>
+                        <div
+                          className="w-full rounded-t-lg grad transition-all duration-700"
+                          style=${{ height: (v / 30) * 100 + "%" }}
+                        ></div>
+                        <span className="text-xs text-slate-400">${d}</span>
+                      </div>`,
+                  )}
+                </div>
+              </div>
+              <div
+                className="rounded-2xl bg-[#0F1B30] border border-white/5 p-6"
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-head font-semibold">In the hub now</h3>
+                  <button
+                    onClick=${() => setTab("Live now")}
+                    className="text-sky-300 text-sm font-semibold"
+                  >
+                    See all
+                  </button>
+                </div>
+                ${LiveList(5)}
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="font-head font-semibold">Recent bookings</h3>
+                <button
+                  onClick=${() => setTab("Bookings")}
+                  className="text-sky-300 text-sm font-semibold"
+                >
+                  Manage
+                </button>
+              </div>
+              ${Bookings}
+            </div>
+          </div>`,
+          Bookings: html`<div>${Bookings}</div>`,
+          Members: html`<div>
+            <input
+              value=${q}
+              onInput=${(e) => setQ(e.target.value)}
+              placeholder="Search members"
+              className="mb-4 w-full sm:w-80 rounded-xl bg-[#0F1B30] border border-white/10 px-4 py-2.5 text-sm outline-none focus:border-sky"
+            />
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+              ${members
+                .filter((m) =>
+                  (m.name + m.org).toLowerCase().includes(q.toLowerCase()),
+                )
+                .map(
+                  (m) =>
+                    html`<div
+                      key=${m.id}
+                      className="rounded-2xl bg-[#0F1B30] border border-white/5 p-5"
+                    >
+                      <div className="flex items-center gap-3">
+                        <${Av} n=${m.name} size="w-11 h-11" />
+                        <div className="min-w-0">
+                          <p className="font-semibold truncate">${m.name}</p>
+                          <p className="text-xs text-slate-400 truncate">
+                            ${m.org}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-xs text-slate-400 mt-3 truncate">
+                        ${m.email}
+                      </p>
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-xs text-slate-400"
+                          >${m.visits} visits</span
+                        >
+                        ${m.space
+                          ? html`<button
+                              onClick=${() => checkOut(m.id)}
+                              className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-red-500/15 text-red-300"
+                            >
+                              Check out
+                            </button>`
+                          : html`<button
+                              onClick=${() => checkIn(m.id, "Hot desk")}
+                              className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-500/15 text-emerald-300"
+                            >
+                              Check in
+                            </button>`}
+                      </div>
+                    </div>`,
+                )}
+            </div>
+          </div>`,
+          "Live now": html`<div>
+            <p className="text-slate-400 mb-4">
+              ${live.length} people are using the hub right now. Times refresh
+              every 30 seconds.
+            </p>
+            <div className="grid md:grid-cols-2 gap-4">
+              ${live.map(
+                (m) =>
+                  html`<div
+                    key=${m.id}
+                    className="rounded-2xl bg-[#0F1B30] border border-white/5 p-5 flex items-center gap-4"
+                  >
+                    <${Av} n=${m.name} size="w-12 h-12" />
+                    <div className="flex-1 min-w-0">
+                      <p
+                        className="font-semibold truncate flex items-center gap-2"
+                      >
+                        ${m.name}<span
+                          className="w-2 h-2 rounded-full bg-emerald-400 live"
+                        ></span>
+                      </p>
+                      <p className="text-sm text-slate-400">${m.space}</p>
+                      <p className="text-xs text-slate-500">
+                        ${m.org}, in for ${dur(m.since + tick * 0)}
+                      </p>
+                    </div>
+                    <button
+                      onClick=${() => checkOut(m.id)}
+                      className="text-sm font-semibold px-3 py-2 rounded-lg bg-white/5 hover:bg-red-500/15 hover:text-red-300 transition"
+                    >
+                      Check out
+                    </button>
+                  </div>`,
+              )}
+            </div>
+            ${live.length === 0 &&
+            html`<p className="text-slate-400">Nobody is checked in.</p>`}
+          </div>`,
+          Spaces: html`<div
+            className="grid md:grid-cols-2 xl:grid-cols-3 gap-4"
+          >
+            ${occ.map(
+              (o) =>
+                html`<div
+                  key=${o.n}
+                  className="rounded-2xl bg-[#0F1B30] border border-white/5 overflow-hidden"
+                >
+                  <${Slot}
+                    label=${"Photo: " + o.n.toLowerCase()}
+                    className="h-28 rounded-none border-0 border-b-2"
+                  />
+                  <div className="p-5">
+                    <div className="flex justify-between">
+                      <h3 className="font-head font-semibold">${o.n}</h3>
+                      <span className="text-sm text-slate-400"
+                        >${o.used} of ${o.c} in use</span
+                      >
+                    </div>
+                    <div
+                      className="mt-3 h-2 rounded-full bg-white/10 overflow-hidden"
+                    >
+                      <div
+                        className="h-full grad transition-all duration-700"
+                        style=${{
+                          width: Math.min(100, (o.used / o.c) * 100) + "%",
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>`,
+            )}
+          </div>`,
+        };
+
+        return html`<div
+          className="dark min-h-screen bg-[#07101F] text-slate-100 flex"
+        >
+          <aside
+            className=${"fixed lg:sticky top-0 z-30 h-screen w-64 bg-[#0A1426] border-r border-white/5 p-5 flex flex-col transition-transform " +
+            (nav ? "translate-x-0" : "-translate-x-full lg:translate-x-0")}
+          >
+            <a
+              href="#home"
+              className="flex items-center gap-2 font-head font-bold text-lg mb-8"
+              ><${Logo} size=${34} white=${true} />Bereko Hub</a
+            >
+            <nav className="space-y-1">
+              ${Object.keys(views).map(
+                (t) =>
+                  html`<button
+                    key=${t}
+                    onClick=${() => {
+                      setTab(t);
+                      setNav(false);
+                    }}
+                    className=${"w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition " +
+                    (tab === t
+                      ? "grad text-white"
+                      : "text-slate-400 hover:bg-white/5 hover:text-white")}
+                  >
+                    <${Ic} n=${t} />${t}${t === "Live now" &&
+                    html`<span
+                      className="ml-auto text-xs bg-emerald-400/20 text-emerald-300 rounded-full px-2"
+                      >${live.length}</span
+                    >`}
+                  </button>`,
+              )}
+            </nav>
+            <div
+              className="mt-auto flex items-center gap-3 p-3 rounded-xl bg-white/[.03]"
+            >
+              <${Av} n="Admin User" />
+              <div className="text-sm min-w-0">
+                <p className="font-semibold">Admin</p>
+                <a
+                  href="#login"
+                  onClick=${() => {
+                    isAdmin = false;
+                  }}
+                  className="text-xs text-slate-400 hover:text-white"
+                  >Log out</a
+                >
+              </div>
+            </div>
+          </aside>
+          <main className="flex-1 min-w-0 p-5 md:p-8">
+            <div className="flex items-center justify-between gap-3 mb-8">
+              <div className="flex items-center gap-3">
+                <button
+                  onClick=${() => setNav(!nav)}
+                  aria-label="Menu"
+                  className="lg:hidden p-2 rounded-lg bg-white/5"
+                >
+                  Menu
+                </button>
+                <div>
+                  <h1 className="font-head font-bold text-2xl">${tab}</h1>
+                  <p className="text-sm text-slate-400">
+                    Tuesday, 17 November 2026
+                  </p>
+                </div>
+              </div>
+              ${BookBtn}
+            </div>
+            <div key=${tab} className="pop">${views[tab]}</div>
+          </main>
+          ${modal &&
+          html`<${BookModal}
+            members=${members}
+            onClose=${() => setModal(false)}
+            onSave=${addBooking}
+          />`}
+          ${toast &&
+          html`<div
+            role="status"
+            className="pop fixed bottom-6 left-1/2 -translate-x-1/2 bg-white text-ink font-semibold text-sm px-5 py-3 rounded-full shadow-xl z-50"
+          >
+            ${toast}
+          </div>`}
+        </div>`;
+      }
+
+      function BookModal({ members, onClose, onSave }) {
+        const [f, setF] = useState({
+          member: members[0].name,
+          space: SPACES[0][0],
+          date: "2026-11-18",
+          start: "09:30",
+          end: "11:30",
+        });
+        const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
+        const cls =
+          "mt-1.5 w-full rounded-xl bg-[#07101F] border border-white/10 px-3 py-2.5 text-sm outline-none focus:border-sky";
+        return html`<div
+          className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+          onClick=${onClose}
+        >
+          <div
+            className="pop w-full max-w-md rounded-3xl bg-[#0F1B30] border border-white/10 p-6"
+            onClick=${(e) => e.stopPropagation()}
+          >
+            <h2 className="font-head font-bold text-xl">
+              Book a space for a member
+            </h2>
+            <div className="mt-5 grid grid-cols-2 gap-4 text-sm">
+              <label className="col-span-2"
+                >Member<select
+                  value=${f.member}
+                  onChange=${set("member")}
+                  className=${cls}
+                >
+                  ${members.map(
+                    (m) => html`<option key=${m.id}>${m.name}</option>`,
+                  )}
+                </select></label
+              >
+              <label className="col-span-2"
+                >Space<select
+                  value=${f.space}
+                  onChange=${set("space")}
+                  className=${cls}
+                >
+                  ${SPACES.map(
+                    (s) => html`<option key=${s[0]}>${s[0]}</option>`,
+                  )}
+                </select></label
+              >
+              <label className="col-span-2"
+                >Date<input
+                  type="date"
+                  value=${f.date}
+                  onChange=${set("date")}
+                  className=${cls}
+              /></label>
+              <label
+                >Start<input
+                  type="time"
+                  value=${f.start}
+                  onChange=${set("start")}
+                  className=${cls}
+              /></label>
+              <label
+                >End<input
+                  type="time"
+                  value=${f.end}
+                  onChange=${set("end")}
+                  className=${cls}
+              /></label>
+            </div>
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                onClick=${onClose}
+                className="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-300 hover:bg-white/5"
+              >
+                Cancel</button
+              ><button
+                onClick=${() => onSave(f)}
+                className="grad text-white px-5 py-2.5 rounded-xl text-sm font-semibold"
+              >
+                Confirm booking
+              </button>
+            </div>
+          </div>
+        </div>`;
+      }
+
+      function Member() {
+        return html`<div className="min-h-screen bg-mist">
+          <header className="bg-white border-b border-sky/10">
+            <div
+              className="max-w-4xl mx-auto px-5 h-16 flex items-center justify-between"
+            >
+              <a
+                href="#home"
+                className="flex items-center gap-2 font-head font-bold text-lg"
+                ><${Logo} size=${34} />Bereko Hub</a
+              ><a href="#login" className="text-sm font-semibold hover:text-sky"
+                >Log out</a
+              >
+            </div>
+          </header>
+          <main className="max-w-4xl mx-auto px-5 py-12 a-rise">
+            <h1 className="font-head font-bold text-3xl">
+              Welcome, ${memberName}
+            </h1>
+            <p className="mt-2 text-ink/70 max-w-xl">
+              Your account is ready. The Bereko team arranges bookings, so you
+              will see them here once they are confirmed.
+            </p>
+            <div className="mt-8 grid md:grid-cols-2 gap-6">
+              <div className="rounded-3xl bg-white border border-sky/15 p-6">
+                <h2 className="font-head font-semibold text-lg">
+                  Your bookings
+                </h2>
+                <p className="mt-3 text-ink/60 text-sm">
+                  No bookings yet. Contact the hub to reserve a space.
+                </p>
+              </div>
+              <div className="rounded-3xl bg-white border border-sky/15 p-6">
+                <h2 className="font-head font-semibold text-lg">Visit us</h2>
+                <p className="mt-3 text-ink/70 text-sm">
+                  2 UST Main Gate Road, Mile 3, Port Harcourt<br />Mon to Sat,
+                  9:30am to 5:30pm
+                </p>
+              </div>
+            </div>
+            <${Slot}
+              label="Photo: hub interior"
+              className="mt-6 h-48 rounded-3xl"
+            />
+          </main>
+        </div>`;
+      }
+
+      function App() {
+        const r = useRoute();
+        if (r === "login") return html`<${Auth} mode="login" />`;
+        if (r === "register") return html`<${Auth} mode="register" />`;
+        if (r === "dashboard")
+          return isAdmin
+            ? html`<${Dashboard} />`
+            : html`<${Auth} mode="login" />`;
+        if (r === "member") return html`<${Member} />`;
+        return html`<${Landing} />`;
+      }
+      ReactDOM.createRoot(document.getElementById("root")).render(
+        html`<${App} />`,
+      );
+    </script>
+  </body>
+</html>
